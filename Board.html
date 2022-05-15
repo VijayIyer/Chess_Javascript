@@ -2,11 +2,12 @@
 <html>
 
 <head>
-   <link rel="stylesheet" href="board.css">
+   
    <script src="movingPieces.js"></script>
+   <link rel="stylesheet" href="board.css">
 </head>
-<body onload = "setPlayerTimers()">
-<div id="player1_timer" onclick = "startCountDown()" clicked = false>
+<body onload = "onload()">
+<div id="player1_timer" onclick = "startCountDown()" clicked = false class = "timers">
 	
 </div>
 	<table class="center">
@@ -227,7 +228,7 @@
 			
 		</tr>
 	</table>
-<div id="player2_timer" onclick="startCountDown()" clicked = false>
+<div id="player2_timer" onclick="startCountDown()" clicked = false class = "timers">
 
 </div>
 </body>
