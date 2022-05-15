@@ -3,7 +3,18 @@
 
 function onload()
 {
-
+	
+	let pieces = document.querySelector(".piece");
+	pieces.forEach(function (piece) {
+	item.addEventListener("dragstart", drag);
+	});
+	
+	let squares = document.querySelector(".squares");
+	squares.forEach(function (square) {
+	item.addEventListener("dragover", allowDrop);
+	item.addEventListener("drop", drop);
+	});
+	
 	timer1 = document.getElementById("player1_timer");
 	timer2 = document.getElementById("player2_timer");
 	timer1.clicked = false;
@@ -27,6 +38,20 @@ function setPlayerTimers()
     useGrouping: false,
 });
 
+}
+
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
 }
 
 function startCountDown()
