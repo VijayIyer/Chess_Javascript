@@ -1,18 +1,31 @@
 
 
-
+// all initializations
 function onload()
 {
-	
-	let pieces = document.querySelector(".piece");
+	var count = 0;
+	let pieces = document.querySelectorAll("td div");
 	pieces.forEach(function (piece) {
-	item.addEventListener("dragstart", drag);
+	piece.setAttribute("class", "piece");
 	});
 	
-	let squares = document.querySelector(".squares");
+	pieces = document.querySelectorAll(".piece");
+	pieces.forEach(function (piece) {
+	piece.setAttribute("id", count++);
+	piece.setAttribute("draggable", true);
+	piece.addEventListener("dragstart", drag);
+	});
+	
+	
+	let cells = document.querySelectorAll("td");
+	cells.forEach(function(cell) {
+	cell.setAttribute("class", "squares");
+	});
+	
+	let squares = document.querySelectorAll(".squares");
 	squares.forEach(function (square) {
-	item.addEventListener("dragover", allowDrop);
-	item.addEventListener("drop", drop);
+	square.addEventListener("dragover", allowDrop);
+	square.addEventListener("drop", drop);
 	});
 	
 	timer1 = document.getElementById("player1_timer");
