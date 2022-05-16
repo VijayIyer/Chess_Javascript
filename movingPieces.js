@@ -198,8 +198,16 @@ function drop(ev) {
     ev.target.removeChild(ev.target.lastChild);
   }
   ev.target.appendChild(document.getElementById(data));
-  startTimer("player1_timer");
-  startTimer("player2_timer");
+  if(ev.target.classList.contains("white"))
+  { startTimer("player1_timer");
+    
+  }
+  else
+  {
+    startTimer("player2_timer");
+    
+  }
+  
 }
 
 function startTimer(timer_id)
@@ -217,6 +225,7 @@ function startTimer(timer_id)
 	else if(timer.clicked === true) {
 	clearInterval(timer.intervalID); 
 	timer.clicked = false;
+	timer.intervalID = null;
 	}
 }	
 
