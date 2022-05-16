@@ -9,16 +9,16 @@ tr td
     background-color: #fff;
 }
 
-/*
+
 tr:nth-child(even) td:nth-child(odd), 
 tr:nth-child(odd) td:nth-child(even)
 {
-    background-color: black;
-    opacity : 0.2;
+    background-color: #ddd;
+    
  
    
 }
-*/
+
 
 .center {
 margin-left: auto;
@@ -33,8 +33,14 @@ height: 50px;
 text-align:center;
 }
 
+td > div {
+font-size:30px;
+
+}
+
 td > div:hover {
-  font-size: 40px;
+  cursor:pointer;
+  font-size:40px;
 }
 .timers {
 	width: 100px;
