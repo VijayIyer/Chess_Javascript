@@ -1,4 +1,4 @@
-
+var currentTimer = "player1_timer";
 var boardConf = ["a1 WR", "b1 WN", "c1 WB",
 "d1 WQ",
 "e1 WK",
@@ -198,35 +198,29 @@ function drop(ev) {
     ev.target.removeChild(ev.target.lastChild);
   }
   ev.target.appendChild(document.getElementById(data));
-  if(ev.target.classList.contains("white"))
-  { startTimer("player1_timer");
-    
+  if(document.getElementById(data).classList.contains("white"))
+  { currentTimer = "player2_timer";
   }
   else
   {
-    startTimer("player2_timer");
-    
+    currentTimer = "player1_timer"; 
   }
   
 }
 
+function getCurrentTimer()
+{
+	return currentTimer;
+}
+
 function startTimer(timer_id)
 {
-	timer = document.getElementById(timer_id);
-	if(timer.clicked === false)
-	{	timer.clicked = true;
-		timer.intervalID = setInterval(() => {
-			if(timer.seconds%60 == 0) timer.minutes--;
+	intervalID = setInterval(() => {
+			timer = document.getElementById(getCurrentTimer());
+			if(timer.seconds%60 == 0)timer.minutes--;
 			timer.seconds--;
 			setPlayerTimers();
 			}, 1000);
-	
-	}
-	else if(timer.clicked === true) {
-	clearInterval(timer.intervalID); 
-	timer.clicked = false;
-	timer.intervalID = null;
-	}
 }	
 
 function startCountDown()
