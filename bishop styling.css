@@ -1,0 +1,12 @@
+div.bishop.black::before {
+
+content: "" url('Chess pieces/bishop1.png');
+transform: (0.3)scale;
+
+}
+div.bishop.white::before {
+
+content: "" url('Chess pieces/bishop.png');
+transform: (0.3)scale;
+
+}

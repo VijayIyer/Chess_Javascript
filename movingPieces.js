@@ -79,24 +79,24 @@ function getPiece(pieceClass, color)
 	{
 		switch(pieceClass)
 		{
-		 case "pawn": return "&#9817;";
-		 case "rook": return "&#9814;";
-		 case "bishop": return "&#9815;";
-		 case "knight": return "";
-		 case "queen" : return "&#9813;";
-		 case "king": return "&#9812;"; 
+		 case "pawn": return "<img src='Chess pieces/pawn.png' height=20px width=30px >";
+		 case "rook": return "<img src='Chess pieces/rook.png' height=20px width=30px >";
+		 case "bishop": return "<img src='Chess pieces/bishop.png' height=20px width=30px >";
+		 case "knight": return "<img src='Chess pieces/knight.png' height=20px width=30px >";
+		 case "queen" : return "<img src='Chess pieces/queen.png' height=20px width=30px >";
+		 case "king": return "<img src='Chess pieces/king.png' height=20px width=30px >";
 		}	
 	}
 	else
 	{
 		switch(pieceClass)
 		{
-		 case "pawn": return "&#9823;";
-		 case "rook": return "&#9820;";
-		 case "bishop": return "&#9821;";
-		 case "knight": return "&#9822;";
-		 case "queen" : return "&#9819;";
-		 case "king": return "&#9818;"; 
+		 case "pawn": return "<img src='Chess pieces/pawn1.png' height=20px width=30px >";
+		 case "rook": return "<img src='Chess pieces/rook1.png' height=20px width=30px >";
+		 case "bishop": return "<img src='Chess pieces/bishop1.png' height=20px width=30px >";
+		 case "knight": return "<img src='Chess pieces/knight1.png' height=20px width=30px >";
+		 case "queen" : return "<img src='Chess pieces/queen1.png' height=20px width=30px >";
+		 case "king": return "<img src='Chess pieces/king1.png' height=20px width=30px >";
 		}
 	}
 }

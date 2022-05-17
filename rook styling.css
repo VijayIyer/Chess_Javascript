@@ -1,0 +1,12 @@
+div.rook.black::before {
+
+content: "" url('Chess pieces/rook1.png');
+transform: (0.3)scale;
+
+}
+div.rook.white::before {
+
+content: "" url('Chess pieces/rook.png');
+transform: (0.3)scale;
+
+}

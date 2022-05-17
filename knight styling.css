@@ -1,0 +1,12 @@
+div.knight.black::before {
+
+content: "" url('Chess pieces/knight1.png');
+transform: (0.3)scale;
+
+}
+div.knight.white::before {
+
+content: "" url('Chess pieces/knight.png');
+transform: (0.3)scale;
+
+}

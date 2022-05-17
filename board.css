@@ -49,10 +49,5 @@ td > div:hover {
 	cursor:pointer;
 }
 
-div.knight::before {
 
-content: "" url('knight1.png');
-transform: (0.5)scale;
-
-}
 

@@ -1,0 +1,12 @@
+div.queen.black::before {
+
+content: "" url('Chess pieces/queen1.png');
+transform: (0.3)scale;
+
+}
+div.queen.white::before {
+
+content: "" url('Chess pieces/queen.png');
+transform: (0.3)scale;
+
+}

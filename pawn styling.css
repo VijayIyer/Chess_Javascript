@@ -1,0 +1,12 @@
+div.pawn.black::before {
+
+content: "" url('Chess pieces/pawn1.png');
+transform: (0.3)scale;
+
+}
+div.pawn.white::before {
+
+content: "" url('Chess pieces/pawn.png');
+transform: (0.3)scale;
+
+}
