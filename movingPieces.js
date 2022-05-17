@@ -82,7 +82,7 @@ function getPiece(pieceClass, color)
 		 case "pawn": return "&#9817;";
 		 case "rook": return "&#9814;";
 		 case "bishop": return "&#9815;";
-		 case "knight": return "&#9816;";
+		 case "knight": return "";
 		 case "queen" : return "&#9813;";
 		 case "king": return "&#9812;"; 
 		}	
@@ -208,9 +208,8 @@ function drop(ev) {
   
 }
 
-function getCurrentTimer()
-{
-	return currentTimer;
+function getCurrentTimer(){
+return currentTimer;
 }
 
 function startTimer(timer_id)

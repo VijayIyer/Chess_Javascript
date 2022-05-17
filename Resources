@@ -1,3 +1,5 @@
 1.timer countdown animation -> https://css-tricks.com/how-to-create-an-animated-countdown-timer-with-html-css-and-javascript/
 2. reading local text file -> https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
-2. stopping and starting interval -> http://jsfiddle.net/qHL8Z/3/
+3. stopping and starting interval -> http://jsfiddle.net/qHL8Z/3/
+4. fitting image using css content: https://stackoverflow.com/questions/8977957/can-i-change-the-height-of-an-image-in-css-before-after-pseudo-elements
+5. chess pieces - https://opengameart.org/content/pixel-chess-pieces
