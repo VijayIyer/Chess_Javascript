@@ -79,40 +79,62 @@ function getPiece(pieceClass, color)
 	{
 		switch(pieceClass)
 		{
-		 case "pawn": return "<img src='Chess pieces/pawn.png' height=20px width=30px >";
-		 case "rook": return "<img src='Chess pieces/rook.png' height=20px width=30px >";
-		 case "bishop": return "<img src='Chess pieces/bishop.png' height=20px width=30px >";
-		 case "knight": return "<img src='Chess pieces/knight.png' height=20px width=30px >";
-		 case "queen" : return "<img src='Chess pieces/queen.png' height=20px width=30px >";
-		 case "king": return "<img src='Chess pieces/king.png' height=20px width=30px >";
+		 case "pawn": return 'Chess pieces/pawn.png';
+		 case "rook": return 'Chess pieces/rook.png';
+		 case "bishop": return 'Chess pieces/bishop.png';s
+		 case "knight": return 'Chess pieces/knight.png';
+		 case "queen" : return 'Chess pieces/queen.png';
+		 case "king": return 'Chess pieces/king.png';
 		}	
 	}
 	else
 	{
 		switch(pieceClass)
 		{
-		 case "pawn": return "<img src='Chess pieces/pawn1.png' height=20px width=30px >";
-		 case "rook": return "<img src='Chess pieces/rook1.png' height=20px width=30px >";
-		 case "bishop": return "<img src='Chess pieces/bishop1.png' height=20px width=30px >";
-		 case "knight": return "<img src='Chess pieces/knight1.png' height=20px width=30px >";
-		 case "queen" : return "<img src='Chess pieces/queen1.png' height=20px width=30px >";
-		 case "king": return "<img src='Chess pieces/king1.png' height=20px width=30px >";
+		 case "pawn": return 'Chess pieces/pawn1.png';
+		 case "rook": return 'Chess pieces/rook1.png';
+		 case "bishop": return 'Chess pieces/bishop1.png';
+		 case "knight": return 'Chess pieces/knight1.png';
+		 case "queen" : return 'Chess pieces/queen1.png';
+		 case "king": return 'Chess pieces/king1.png';
 		}
 	}
 }
 function createPieceDiv(pieceType, color)
 {
-	var node = document.createElement("div");
+	var node = document.createElement("img");
 	var pieceClass = getPieceClass(pieceType);
 	var color = getColor(color);
 	// this line controls how the piece appears
-	node.innerHTML = getPiece(pieceClass, color);
+	node.setAttribute("src", getPiece(pieceClass, color));
 	node.setAttribute("class", "piece"+" "+pieceClass+" "+color);
 	return node;
 }
 
 function initializeBoard()
-{	var lines = boardConf;
+{	
+	var numRows = 0;
+	var numSquares = 0;
+	var board = document.getElementById("board");
+	while(numRows < 8)
+	{
+		var row = document.createElement("tr");
+		row.setAttribute("id", "row"+(8-numRows));
+		var temp = 0
+		while(temp < 8)
+		{
+			var square = document.createElement("td");
+			square.setAttribute("id", "square"+numSquares);
+			row.appendChild(square);
+			temp++;
+			numSquares++;
+		}
+		board.appendChild(row);
+		numRows++;
+		
+	}
+
+	var lines = boardConf;
 	var cells = document.querySelectorAll('td');
 	for(var line of lines) 
 	{
@@ -131,12 +153,12 @@ function onload()
 {
 	initializeBoard();
 	var count = 0;
-	let pieces = document.querySelectorAll("td div");
+	//let pieces = document.querySelectorAll("td img");
 	/*pieces.forEach(function (piece) {
 	piece.setAttribute("class", "piece");
 	});
 	*/
-	pieces = document.querySelectorAll(".piece");
+	let pieces = document.querySelectorAll(".piece");
 	pieces.forEach(function (piece) {
 	piece.setAttribute("id", count++);
 	piece.setAttribute("draggable", true);
@@ -144,7 +166,7 @@ function onload()
 	});
 	
 	
-	let cells = document.querySelectorAll("td");
+	let cells = document.querySelectorAll("#board td");
 	cells.forEach(function(cell) {
 	cell.setAttribute("class", "squares");
 	});
@@ -159,10 +181,9 @@ function onload()
 	timer2 = document.getElementById("player2_timer");
 	timer1.clicked = false;
 	timer2.clicked = false;
-	timer1.minutes = 5;
-	timer1.seconds = 60;
-	timer2.minutes = 5;
-	timer2.seconds = 60;
+	timer1.time = 300;
+	timer2.time = 300;
+	
 	timer1.intervalID = null;
 	timer2.intervalID = null;
 	setPlayerTimers();
@@ -171,19 +192,36 @@ function onload()
 
 function setPlayerTimers()
 {
-	
-	document.getElementById("player1_timer").innerHTML =	timer1.minutes+":"+(timer1.seconds%60).toLocaleString("en-US", {
-    minimumIntegerDigits: 2,
-    useGrouping: false,
-});
-	document.getElementById("player2_timer").innerHTML =  timer2.minutes+":"+(timer2.seconds%60).toLocaleString("en-US", {
-    minimumIntegerDigits: 2,
-    useGrouping: false,
-});
+/*	var timer1Div = document.getElementById("player1_timer");
+	var timer2Div = document.getElementById("player2_timer"); */
+	if(!timer1.time == 0)
+	{
+		timer1.innerHTML =	Math.floor(timer1.time/60) +":"+(timer1.time%60).toLocaleString("en-US", {
+	    minimumIntegerDigits: 2,
+	    useGrouping: false,
+		});
+	}
+	if(!timer2.time == 0)
+	{
+		timer2.innerHTML =  Math.floor(timer2.time/60)+":"+(timer2.time%60).toLocaleString("en-US", {
+	    minimumIntegerDigits: 2,
+	    useGrouping: false,
+		});
+	}
 
 }
 
-
+function sameColor(piece, parentSquare)
+{
+	if(parentSquare.hasChildNodes())
+	{
+	if(parentSquare.firstChild.classList.contains("white") && piece.classList.contains("white")) return true;
+	if(parentSquare.firstChild.classList.contains("black") && piece.classList.contains("black")) return true;
+	return false;
+	}
+	return false;
+	
+}
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -193,18 +231,26 @@ function drag(ev) {
 
 function drop(ev) {
   ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  while (ev.target.firstChild) {
-    ev.target.removeChild(ev.target.lastChild);
-  }
-  ev.target.appendChild(document.getElementById(data));
-  if(document.getElementById(data).classList.contains("white"))
-  { currentTimer = "player2_timer";
-  }
-  else
+  var piece = document.getElementById(ev.dataTransfer.getData("text"));
+  
+  var parentSquare = document.getElementById(ev.target.id);
+  
+  while(!parentSquare.classList.contains("squares")) parentSquare = parentSquare.parentNode;
+  if(!sameColor(piece, parentSquare))
   {
-    currentTimer = "player1_timer"; 
-  }
+	  while(parentSquare.firstChild)
+	  {
+	  	parentSquare.removeChild(parentSquare.lastChild);
+	  }
+	  parentSquare.appendChild(piece);
+	  if(piece.classList.contains("white"))
+	  { currentTimer = "player2_timer";
+	  }
+	  else
+	  {
+	    currentTimer = "player1_timer"; 
+	  }
+   }
   
 }
 
@@ -216,8 +262,8 @@ function startTimer(timer_id)
 {
 	intervalID = setInterval(() => {
 			timer = document.getElementById(getCurrentTimer());
-			if(timer.seconds%60 == 0)timer.minutes--;
-			timer.seconds--;
+			//if(timer.seconds%60 == 0) { timer.minutes--; timer.seconds = 60;}
+			timer.time--;
 			setPlayerTimers();
 			}, 1000);
 }	
