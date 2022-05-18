@@ -143,10 +143,20 @@ function initializeBoard()
 		var color = line.charAt(3);
 		var pieceType = line.charAt(4);
 		var node = createPieceDiv(pieceType, color);
+		
 		cells[row*8+col].appendChild(node);
 	}
 }
 
+
+function removeEffect()
+{
+	var validSquares = document.querySelectorAll(".valid");
+	for(var square of validSquares)
+	{
+		square.classList.remove("valid");
+	}
+}
 
 // all initializations
 function onload()
@@ -163,6 +173,7 @@ function onload()
 	piece.setAttribute("id", count++);
 	piece.setAttribute("draggable", true);
 	piece.addEventListener("dragstart", drag);
+	piece.addEventListener("dragend", removeEffect);
 	});
 	
 	
@@ -194,21 +205,68 @@ function setPlayerTimers()
 {
 /*	var timer1Div = document.getElementById("player1_timer");
 	var timer2Div = document.getElementById("player2_timer"); */
-	if(!timer1.time == 0)
-	{
+	
 		timer1.innerHTML =	Math.floor(timer1.time/60) +":"+(timer1.time%60).toLocaleString("en-US", {
 	    minimumIntegerDigits: 2,
 	    useGrouping: false,
 		});
-	}
-	if(!timer2.time == 0)
-	{
+	
+	
 		timer2.innerHTML =  Math.floor(timer2.time/60)+":"+(timer2.time%60).toLocaleString("en-US", {
 	    minimumIntegerDigits: 2,
 	    useGrouping: false,
 		});
-	}
+	
+}
 
+function getPieceColor(piece)
+{
+	if(piece.classList.contains("white")) return "white";
+	else return "black";
+}
+
+function getPieceType(piece)
+{
+	if(piece.classList.contains("pawn")) return "pawn";
+	else if(piece.classList.contains("knight")) return "knight";
+	else if(piece.classList.contains("bishop")) return "bishop";
+	else if(piece.classList.contains("rook")) return "rook";
+	else if(piece.classList.contains("queen")) return "queen";
+	
+	else return "king";
+}
+
+function getValidSquares(pieceType, currentPos, color)
+{
+	var row = currentPos[0];
+	var col = currentPos[1];
+	if(pieceType == "king") return [[row - 1, col], [row - 1, col - 1],
+	 [row - 1, col + 1],  [row+1, col], 
+	 [row + 1, col - 1], [row + 1, col + 1], [row, col - 1], [row, col+1]];
+	 else if(pieceType == "pawn") {if(color == "white") return [[row-1, col], [row-2, col]]; else return [[row+1, col], [row+2, col]];}
+	 else if(pieceType == "knight") return [[row+2, col+1], [row+2, col-1], [row+1, col+2], [row+1, col-2], 
+	 [row-1, col-2], [row-1, col+2], [row-2, col+1], [row-2, col-1]];
+	 else if(pieceType == "rook") return [[row, 0], [row, 1], [row, 2], [row, 3], [row, 4], [row, 5], [row, 6], [row, 7],
+	 										[0, col], [1, col], [2, col], [3, col], [4, col], [5, col], [6, col], [7, col]];
+	 
+	 else [];
+}
+
+function highlightValidSquares(piece)
+{
+  var pieceType = getPieceType(piece);
+  var pieceColor = getPieceColor(piece);
+  var parentSquare = piece.parentElement.id; // parent of piece has to be a square
+  var parentSquare = parentSquare.slice(parentSquare.indexOf("square")+6);
+  var row = Math.floor(parentSquare/8);
+  var col = parentSquare%8;
+  var cells = document.querySelectorAll("#board td");
+  var validSquares = getValidSquares(pieceType, [row, col], pieceColor);
+  for(var square of validSquares) 
+  {	[row, col] = square;
+  	if((row < 8 && row >= 0) && (col < 8 && col >= 0))	
+  		cells[row*8+col].classList.add("valid");
+  }
 }
 
 function sameColor(piece, parentSquare)
@@ -227,7 +285,9 @@ function allowDrop(ev) {
 }
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-}
+  var piece = document.getElementById(ev.target.id);
+  highlightValidSquares(piece);
+  }
 
 function drop(ev) {
   ev.preventDefault();
@@ -262,10 +322,13 @@ function startTimer(timer_id)
 {
 	intervalID = setInterval(() => {
 			timer = document.getElementById(getCurrentTimer());
+			if(!timer.time == 0)
 			//if(timer.seconds%60 == 0) { timer.minutes--; timer.seconds = 60;}
-			timer.time--;
-			setPlayerTimers();
-			}, 1000);
+			{
+				timer.time--;
+			}
+				setPlayerTimers();
+				}, 1000);
 }	
 
 function startCountDown()
