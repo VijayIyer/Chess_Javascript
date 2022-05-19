@@ -236,18 +236,56 @@ function getPieceType(piece)
 	else return "king";
 }
 
-function getValidSquares(pieceType, currentPos, color)
+
+function getValidKingSquares(squares, row, col, color)
+{
+	var initialSquares = [[row - 1, col], [row - 1, col - 1],
+	 [row - 1, col + 1],  [row+1, col], 
+	 [row + 1, col - 1], [row + 1, col + 1], [row, col - 1], [row, col+1]];
+	 return initialSquares.
+	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
+	 //&& !squares[square[0]*8+sqaure[1].classList.contains(color)]));
+}
+
+function getValidPawnSquares(squares, row, col, color)
+{	if(color == "white") {var initialSquares1 = [[row-1, col]]; initialSquares2 = [[row-1, col+1], [row-1, col-1]]; var oppColor = "black";}
+	else {var initialSquares1 = [[row+1, col]]; initialSquares2 = [[row+1, col+1], [row+1, col-1]]; var oppColor = "white";}
+	return initialSquares1.
+	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0))
+	 .concat(initialSquares2.
+	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => (squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(oppColor))));
+}
+
+
+function getValidKnightSquares(squares, row, col, color)
+{
+	var initialSquares = [[row+2, col+1], [row+2, col-1], [row+1, col+2], [row+1, col-2], 
+	 [row-1, col-2], [row-1, col+2], [row-2, col+1], [row-2, col-1]];
+	 return initialSquares.
+	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
+}
+
+function getValidRookSquares(squares, row, col, color)
+{ var initialSquares = [[row, 0], [row, 1], [row, 2], [row, 3], [row, 4], [row, 5], [row, 6], [row, 7],
+	 										[0, col], [1, col], [2, col], [3, col], [4, col], [5, col], [6, col], [7, col]];
+return initialSquares.
+	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
+
+}
+
+function getValidSquares(squares, pieceType, currentPos, color)
 {
 	var row = currentPos[0];
 	var col = currentPos[1];
-	if(pieceType == "king") return [[row - 1, col], [row - 1, col - 1],
-	 [row - 1, col + 1],  [row+1, col], 
-	 [row + 1, col - 1], [row + 1, col + 1], [row, col - 1], [row, col+1]];
-	 else if(pieceType == "pawn") {if(color == "white") return [[row-1, col], [row-2, col]]; else return [[row+1, col], [row+2, col]];}
-	 else if(pieceType == "knight") return [[row+2, col+1], [row+2, col-1], [row+1, col+2], [row+1, col-2], 
-	 [row-1, col-2], [row-1, col+2], [row-2, col+1], [row-2, col-1]];
-	 else if(pieceType == "rook") return [[row, 0], [row, 1], [row, 2], [row, 3], [row, 4], [row, 5], [row, 6], [row, 7],
-	 										[0, col], [1, col], [2, col], [3, col], [4, col], [5, col], [6, col], [7, col]];
+	if(pieceType == "king") return getValidKingSquares(squares, row, col, color);
+	 else if(pieceType == "pawn") return getValidPawnSquares(squares, row, col, color); 
+	 else if(pieceType == "knight") return getValidKnightSquares(squares, row, col, color);
+	 else if(pieceType == "rook") return getValidRookSquares(squares, row, col, color);
 	 
 	 else [];
 }
@@ -260,12 +298,11 @@ function highlightValidSquares(piece)
   var parentSquare = parentSquare.slice(parentSquare.indexOf("square")+6);
   var row = Math.floor(parentSquare/8);
   var col = parentSquare%8;
-  var cells = document.querySelectorAll("#board td");
-  var validSquares = getValidSquares(pieceType, [row, col], pieceColor);
+  var squares = document.querySelectorAll("#board td");
+  var validSquares = getValidSquares(squares, pieceType, [row, col], pieceColor);
   for(var square of validSquares) 
   {	[row, col] = square;
-  	if((row < 8 && row >= 0) && (col < 8 && col >= 0))	
-  		cells[row*8+col].classList.add("valid");
+  	squares[row*8+col].classList.add("valid");
   }
 }
 
