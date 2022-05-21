@@ -71,9 +71,11 @@ function onload()
 	timer2.intervalID = null;
 	setPlayerTimers();
 	startTimer('player1_timer');
+	return;
 }
 function readTextFile(file)
 {
+	return;
 }
 //#endregion
 // to be used later to read file on server at the start
@@ -87,6 +89,7 @@ function getColor(color)
 	    case "W": return "white";
 	    case "B": return "black";
 	}
+	return;
 }
 // recognize the column on the board from notation in boardConf
 function getColumn(columnNotation)
@@ -102,6 +105,7 @@ function getColumn(columnNotation)
 		case "g": return 6;
 		case "h": return 7;
 	}
+	return;
 }
 // recognize piece type from notation
 function getPieceClass(pieceType)
@@ -115,6 +119,7 @@ function getPieceClass(pieceType)
 	    case "Q": return "queen";
 	    case "K": return "king";
 	}
+	return ;
 }
 function initializeBoard()
 {	
@@ -151,6 +156,7 @@ function initializeBoard()
 		
 		cells[row*8+col].appendChild(node);
 	}
+	return;
 }
 //#endregion
 
@@ -180,6 +186,7 @@ function getPiece(pieceClass, color)
 		 case "king": return 'Chess pieces/king1.png';
 		}
 	}
+	return;
 }
 function createPieceDiv(pieceType, color)
 {
@@ -200,6 +207,7 @@ function removeEffect()
 	{
 		square.classList.remove("valid");
 	}
+	return;
 }
 
 function setPlayerTimers()
@@ -217,7 +225,7 @@ function setPlayerTimers()
 	    minimumIntegerDigits: 2,
 	    useGrouping: false,
 		});
-	
+	return;
 }
 
 function getPieceColor(piece)
@@ -247,6 +255,8 @@ function getValidKingSquares(squares, row, col, color)
 	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
 	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
 	 //&& !squares[square[0]*8+sqaure[1].classList.contains(color)]));
+	 
+	 return;
 }
 
 // go in pawnRules file
@@ -295,6 +305,8 @@ function getValidPawnSquares(piece, squares, row, col, color)
 	 .concat(initialSquares2.
 	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
 	 filter(square => (squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(oppColor))));
+	 
+	 
 }
 
 
@@ -308,8 +320,40 @@ function getValidKnightSquares(squares, row, col, color)
 }
 
 function getValidRookSquares(squares, row, col, color)
-{ var initialSquares = [[row, 0], [row, 1], [row, 2], [row, 3], [row, 4], [row, 5], [row, 6], [row, 7],
-	 										[0, col], [1, col], [2, col], [3, col], [4, col], [5, col], [6, col], [7, col]];
+{ var initialSquares = [];
+if(color == "white") var oppColor = "black";
+	else var oppColor = "white";
+tmp_row = row+1;
+tmp_col = col;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); ++tmp_row;}
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row - 1;
+tmp_col = col;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); --tmp_row;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row;
+tmp_col = col + 1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+  { initialSquares.push([tmp_row, tmp_col]); ++tmp_col;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row;
+tmp_col = col - 1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); --tmp_col;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor))
+ 	initialSquares.push([tmp_row, tmp_col]);
+ 
 return initialSquares.
 	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
 	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
@@ -318,13 +362,41 @@ return initialSquares.
 
 function getValidBishopSquares(squares, row, col, color)
 {
-	var initialSquares = [];
-	for(var i of [...Array(8).keys()])
-	{ for(var j of [...Array(8).keys()])
-		{
-			initialSquares.push([i, j]);		
-		}
-	}
+var initialSquares = [];
+if(color == "white") var oppColor = "black";
+	else var oppColor = "white";
+tmp_row = row+1;
+tmp_col = col+1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); ++tmp_row; ++tmp_col;}
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row - 1;
+tmp_col = col+1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); --tmp_row; ++tmp_col;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row+1;
+tmp_col = col - 1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+  { initialSquares.push([tmp_row, tmp_col]); --tmp_col; ++tmp_row;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor)) 
+ 	initialSquares.push([tmp_row, tmp_col]);
+tmp_row = row - 1;
+tmp_col = col - 1;
+ while(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && 
+ 	squares[tmp_row*8+tmp_col].childElementCount == 0)
+ { initialSquares.push([tmp_row, tmp_col]); --tmp_col; --tmp_row;}
+ 
+ if(((tmp_row >= 0) && (tmp_row < 8) && (tmp_col >= 0) && (tmp_col < 8)) && squares[tmp_row*8+tmp_col].childElementCount > 0 && squares[tmp_row*8+tmp_col].firstElementChild.classList.contains(oppColor))
+ 	initialSquares.push([tmp_row, tmp_col]);
+	
+	
 	return initialSquares.
 	filter(square => Math.abs(square[0]-row) == Math.abs(square[1] - col)).
 	filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
@@ -357,6 +429,8 @@ function highlightValidSquares(piece)
   {	[row, col] = square;
   	squares[row*8+col].classList.add("valid");
   }
+  
+  return;
 }
 
 function sameColor(piece, parentSquare)
