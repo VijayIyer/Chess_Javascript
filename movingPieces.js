@@ -30,135 +30,7 @@ var boardConf = ["a1 WR", "b1 WN", "c1 WB",
 "g8 BN",
 "h8 BR"];
 
-
-
-// to be used later to read file on server at the start
-function readTextFile(file)
-{
-}
-
-
-function getColor(color)
-{	
-	switch(color)
-	{
-	    case "W": return "white";
-	    case "B": return "black";
-	}
-}
-
-function getColumn(columnNotation)
-{
-	switch(columnNotation)
-	{
-		case "a": return 0;
-		case "b": return 1;
-		case "c": return 2;
-		case "d": return 3;
-		case "e": return 4;
-		case "f": return 5;
-		case "g": return 6;
-		case "h": return 7;
-	}
-}
-function getPieceClass(pieceType)
-{	
-	switch(pieceType)
-	{
-	    case "p": return "pawn";
-	    case "R": return "rook";
-	    case "N": return "knight";
-	    case "B": return "bishop";
-	    case "Q": return "queen";
-	    case "K": return "king";
-	}
-}
-function getPiece(pieceClass, color)
-{
-	if(color =="white")
-	{
-		switch(pieceClass)
-		{
-		 case "pawn": return 'Chess pieces/pawn.png';
-		 case "rook": return 'Chess pieces/rook.png';
-		 case "bishop": return 'Chess pieces/bishop.png';s
-		 case "knight": return 'Chess pieces/knight.png';
-		 case "queen" : return 'Chess pieces/queen.png';
-		 case "king": return 'Chess pieces/king.png';
-		}	
-	}
-	else
-	{
-		switch(pieceClass)
-		{
-		 case "pawn": return 'Chess pieces/pawn1.png';
-		 case "rook": return 'Chess pieces/rook1.png';
-		 case "bishop": return 'Chess pieces/bishop1.png';
-		 case "knight": return 'Chess pieces/knight1.png';
-		 case "queen" : return 'Chess pieces/queen1.png';
-		 case "king": return 'Chess pieces/king1.png';
-		}
-	}
-}
-function createPieceDiv(pieceType, color)
-{
-	var node = document.createElement("img");
-	var pieceClass = getPieceClass(pieceType);
-	var color = getColor(color);
-	// this line controls how the piece appears
-	node.setAttribute("src", getPiece(pieceClass, color));
-	node.setAttribute("class", "piece"+" "+pieceClass+" "+color);
-	return node;
-}
-
-function initializeBoard()
-{	
-	var numRows = 0;
-	var numSquares = 0;
-	var board = document.getElementById("board");
-	while(numRows < 8)
-	{
-		var row = document.createElement("tr");
-		row.setAttribute("id", "row"+(8-numRows));
-		var temp = 0
-		while(temp < 8)
-		{
-			var square = document.createElement("td");
-			square.setAttribute("id", "square"+numSquares);
-			row.appendChild(square);
-			temp++;
-			numSquares++;
-		}
-		board.appendChild(row);
-		numRows++;
-		
-	}
-
-	var lines = boardConf;
-	var cells = document.querySelectorAll('td');
-	for(var line of lines) 
-	{
-		var col = getColumn(line.charAt(0));
-		var row = 8 - line.charAt(1);
-		var color = line.charAt(3);
-		var pieceType = line.charAt(4);
-		var node = createPieceDiv(pieceType, color);
-		
-		cells[row*8+col].appendChild(node);
-	}
-}
-
-
-function removeEffect()
-{
-	var validSquares = document.querySelectorAll(".valid");
-	for(var square of validSquares)
-	{
-		square.classList.remove("valid");
-	}
-}
-
-// all initializations
+//#region all initializations
 function onload()
 {
 	initializeBoard();
@@ -199,6 +71,135 @@ function onload()
 	timer2.intervalID = null;
 	setPlayerTimers();
 	startTimer('player1_timer');
+}
+function readTextFile(file)
+{
+}
+//#endregion
+// to be used later to read file on server at the start
+
+//#region converting boardConf to class attributes
+// recognize class from notation in boardConf
+function getColor(color)
+{	
+	switch(color)
+	{
+	    case "W": return "white";
+	    case "B": return "black";
+	}
+}
+// recognize the column on the board from notation in boardConf
+function getColumn(columnNotation)
+{
+	switch(columnNotation)
+	{
+		case "a": return 0;
+		case "b": return 1;
+		case "c": return 2;
+		case "d": return 3;
+		case "e": return 4;
+		case "f": return 5;
+		case "g": return 6;
+		case "h": return 7;
+	}
+}
+// recognize piece type from notation
+function getPieceClass(pieceType)
+{	
+	switch(pieceType)
+	{
+	    case "p": return "pawn";
+	    case "R": return "rook";
+	    case "N": return "knight";
+	    case "B": return "bishop";
+	    case "Q": return "queen";
+	    case "K": return "king";
+	}
+}
+function initializeBoard()
+{	
+	var numRows = 0;
+	var numSquares = 0;
+	var board = document.getElementById("board");
+	while(numRows < 8)
+	{
+		var row = document.createElement("tr");
+		row.setAttribute("id", "row"+(8-numRows));
+		var temp = 0
+		while(temp < 8)
+		{
+			var square = document.createElement("td");
+			square.setAttribute("id", "square"+numSquares);
+			row.appendChild(square);
+			temp++;
+			numSquares++;
+		}
+		board.appendChild(row);
+		numRows++;
+		
+	}
+
+	var lines = boardConf;
+	var cells = document.querySelectorAll('td');
+	for(var line of lines) 
+	{
+		var col = getColumn(line.charAt(0));
+		var row = 8 - line.charAt(1);
+		var color = line.charAt(3);
+		var pieceType = line.charAt(4);
+		var node = createPieceDiv(pieceType, color);
+		
+		cells[row*8+col].appendChild(node);
+	}
+}
+//#endregion
+
+function getPiece(pieceClass, color)
+{
+	if(color =="white")
+	{
+		switch(pieceClass)
+		{
+		 case "pawn": return 'Chess pieces/pawn.png';
+		 case "rook": return 'Chess pieces/rook.png';
+		 case "bishop": return 'Chess pieces/bishop.png';s
+		 case "knight": return 'Chess pieces/knight.png';
+		 case "queen" : return 'Chess pieces/queen.png';
+		 case "king": return 'Chess pieces/king.png';
+		}	
+	}
+	else
+	{
+		switch(pieceClass)
+		{
+		 case "pawn": return 'Chess pieces/pawn1.png';
+		 case "rook": return 'Chess pieces/rook1.png';
+		 case "bishop": return 'Chess pieces/bishop1.png';
+		 case "knight": return 'Chess pieces/knight1.png';
+		 case "queen" : return 'Chess pieces/queen1.png';
+		 case "king": return 'Chess pieces/king1.png';
+		}
+	}
+}
+function createPieceDiv(pieceType, color)
+{
+	var node = document.createElement("img");
+	var pieceClass = getPieceClass(pieceType);
+	var color = getColor(color);
+	// this line controls how the piece appears
+	node.setAttribute("src", getPiece(pieceClass, color));
+	node.setAttribute("class", "piece"+" "+pieceClass+" "+color);
+	if(pieceClass == "pawn") node.setAttribute("hasMoved", "false");
+	return node;
+}
+
+function removeEffect()
+{
+	var validSquares = document.querySelectorAll(".valid");
+	for(var square of validSquares)
+	{
+		square.classList.remove("valid");
+	}
 }
 
 function setPlayerTimers()
@@ -248,9 +249,46 @@ function getValidKingSquares(squares, row, col, color)
 	 //&& !squares[square[0]*8+sqaure[1].classList.contains(color)]));
 }
 
-function getValidPawnSquares(squares, row, col, color)
-{	if(color == "white") {var initialSquares1 = [[row-1, col]]; initialSquares2 = [[row-1, col+1], [row-1, col-1]]; var oppColor = "black";}
-	else {var initialSquares1 = [[row+1, col]]; initialSquares2 = [[row+1, col+1], [row+1, col-1]]; var oppColor = "white";}
+// go in pawnRules file
+function getInitialPawnSquaresMove(piece, row, col, color)
+{
+	if(color=="white")
+	{	var initialSquares1 = [[row-1, col]]; 
+		if(piece.getAttribute('hasMoved') == 'false') initialSquares1.push([row-2, col]);
+	}
+	else {
+		var initialSquares1 = [[row+1, col]]; 
+		if(piece.getAttribute('hasMoved') == 'false') initialSquares1.push([row+2, col]);
+	}
+	
+	return initialSquares1;
+		
+}
+
+// go in pawnRules file
+function getInitialPawnSquaresCapture(piece, row, col, color)
+{
+	if(color=="white")
+	{	var initialSquares1 = [[row-1, col-1], [row-1, col+1]]; 
+		
+	}
+	else {
+		var initialSquares1 = [[row+1, col-1], [row+1, col+1]]; 
+		
+	}
+	
+	return initialSquares1;
+		
+}
+
+
+
+function getValidPawnSquares(piece, squares, row, col, color)
+{	
+	var initialSquares1 = getInitialPawnSquaresMove(piece, row, col, color)
+	var initialSquares2 = getInitialPawnSquaresCapture(piece, row, col, color);	
+	if(color == "white") var oppColor = "black";
+	else var oppColor = "white";
 	return initialSquares1.
 	 filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
 	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0))
@@ -278,16 +316,31 @@ return initialSquares.
 
 }
 
-function getValidSquares(squares, pieceType, currentPos, color)
+function getValidBishopSquares(squares, row, col, color)
+{
+	var initialSquares = [];
+	for(var i of [...Array(8).keys()])
+	{ for(var j of [...Array(8).keys()])
+		{
+			initialSquares.push([i, j]);		
+		}
+	}
+	return initialSquares.
+	filter(square => Math.abs(square[0]-row) == Math.abs(square[1] - col)).
+	filter(square => ((square[0] < 8 && square[0] >= 0) && (square[0] < 8 && square[1] >= 0))).
+	 filter(square => !(squares[square[0]*8+square[1]].childElementCount > 0 && squares[square[0]*8+square[1]].firstElementChild.classList.contains(color)));
+}
+
+function getValidSquares(piece, squares, pieceType, currentPos, color)
 {
 	var row = currentPos[0];
 	var col = currentPos[1];
 	if(pieceType == "king") return getValidKingSquares(squares, row, col, color);
-	 else if(pieceType == "pawn") return getValidPawnSquares(squares, row, col, color); 
+	 else if(pieceType == "pawn") return getValidPawnSquares(piece, squares, row, col, color); 
 	 else if(pieceType == "knight") return getValidKnightSquares(squares, row, col, color);
 	 else if(pieceType == "rook") return getValidRookSquares(squares, row, col, color);
-	 
-	 else [];
+	 else if(pieceType == "bishop") return getValidBishopSquares(squares, row, col, color);
+	 else return getValidBishopSquares(squares, row, col, color).concat(getValidRookSquares(squares, row, col, color));
 }
 
 function highlightValidSquares(piece)
@@ -299,7 +352,7 @@ function highlightValidSquares(piece)
   var row = Math.floor(parentSquare/8);
   var col = parentSquare%8;
   var squares = document.querySelectorAll("#board td");
-  var validSquares = getValidSquares(squares, pieceType, [row, col], pieceColor);
+  var validSquares = getValidSquares(piece, squares, pieceType, [row, col], pieceColor);
   for(var square of validSquares) 
   {	[row, col] = square;
   	squares[row*8+col].classList.add("valid");
@@ -328,7 +381,13 @@ function drag(ev) {
 
 function drop(ev) {
   ev.preventDefault();
+ 
   var piece = document.getElementById(ev.dataTransfer.getData("text"));
+  if(piece.classList.contains("black") && currentTimer != "player2_timer") return;
+  if(piece.classList.contains("white") && currentTimer != "player1_timer") return;
+  
+  
+  
   
   var parentSquare = document.getElementById(ev.target.id);
   
@@ -340,6 +399,10 @@ function drop(ev) {
 	  	parentSquare.removeChild(parentSquare.lastChild);
 	  }
 	  parentSquare.appendChild(piece);
+	  
+	  
+	  // effects of the move
+	  if(piece.classList.contains("pawn")) piece.setAttribute('hasMoved', 'true');
 	  if(piece.classList.contains("white"))
 	  { currentTimer = "player2_timer";
 	  }
