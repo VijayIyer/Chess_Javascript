@@ -1,0 +1,18 @@
+<!Doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="board.css">
+	<script src="movingPieces.js"></script>
+	<script src="moveRequest.js"></script>
+
+</head>
+<body onload="loadBoard()">
+	<input type = "text" id = "move" onfocus="this.value=''" name="move">
+		<button onclick = "makeMove();">make move!</button>
+	</input>
+	<br><label id="game"></label>
+	<br><table id="board"></table>
+	<button onclick="loadBoard()">get updated board!</button>
+	
+</body>
+</html>

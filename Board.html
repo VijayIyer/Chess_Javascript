@@ -4,7 +4,9 @@
 <head>
    
    <script src="movingPieces.js"></script>
+   <link rel="stylesheet" href="timerStyles.css">
    <link rel="stylesheet" href="board.css">
+   
   <!-- <link rel="stylesheet" href="pawn styling.css">
    <link rel="stylesheet" href="rook styling.css">
    <link rel="stylesheet" href="knight styling.css">
@@ -14,20 +16,10 @@
 </head>
 <body onload = "onload()">
 <div >
-<h1>CSS Countdown Numbers</h1>
-<div id="player1_timer" class="timers numero_counting_wrapper">
-  <div class="numero_shape"></div>
-</div>
-
-</div>
-	<table class="center" id = "board">
-	</table>
-<div id="player2_timer" class = "timers numero_counting_wrapper">
-
+<div class="row">
+  <div class="column">  <div id="player1_timer" class="timers"></div> </div>
+  <div class="column"> <table class="center" id = "board"></table> </div>
+  <div class="column"> <div id="player2_timer" class = "timers"></div> </div>
 </div>
 </body>
-
-
-
-
 </html>
